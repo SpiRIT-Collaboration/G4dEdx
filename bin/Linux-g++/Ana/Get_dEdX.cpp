@@ -16,9 +16,10 @@ void Get_dEdX::Initial(string ParticleName, string Momentum, string Magnetic, st
   TPC_Length_Z = Length_Z;
 }
 
-void Get_dEdX::Set_TrackParas(int SegmentNum_tem, double KeepPercent_tem)
+void Get_dEdX::Set_TrackParas(int SegmentNum_tem, double LowerKeepPercent_tem, double KeepPercent_tem)
 {
   SegmentNum = SegmentNum_tem;
+  LowerKeepPercent = LowerKeepPercent_tem;
   KeepPercent = KeepPercent_tem;
 }
 
@@ -53,13 +54,17 @@ double Get_dEdX::Ana_Truncated_dEdX()
   cout<<"Track Num: "<<EvtNum/SegmentNum<<endl;
   
   const int TrackNum = EvtNum/SegmentNum;
-  double Truncated_Value[TrackNum]= {0};
+  double *Truncated_Value = new double[TrackNum];
+  for (int i = 0; i < TrackNum; i++)
+    Truncated_Value[i] = 0;
   double Avg_TruncatedValue = 0;
   
   for(int i=0;i<EvtNum/SegmentNum;i++)
   {
     if((i)%1000==0) { cout<<"Evt:"<<i<<endl; }
-    double SegmentEdep[SegmentNum] = {0};
+    double *SegmentEdep = new double[SegmentNum];
+    for (int i = 0; i < SegmentNum; i++)
+      SegmentEdep[i] = 0;
     for(int j=0;j<SegmentNum;j++)
     {
       t1_data->GetEntry(i+j);
@@ -193,7 +198,7 @@ double Get_dEdX::Cal_Truncated_Mean(int HitNum,double* dEdX_Array)
 
   dEdX_tem = 0;
   
-  for(int i=0.0*HitNum;i<HitNum*KeepPercent;i++)
+  for(int i=LowerKeepPercent*HitNum;i<HitNum*KeepPercent;i++)
   {
     dEdX_tem += dEdX_Array[i]; 
   }

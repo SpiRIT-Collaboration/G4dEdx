@@ -29,13 +29,14 @@ public:
   string TPC_Length_Z;
   
   int SegmentNum;
+  double LowerKeepPercent;
   double KeepPercent;
   
   string RecorderFileName;
   void SetRecordFile(string FileName_tem);
   
   void Initial(string ParticleName, string Momentum, string Magnetic, string StepLength, string Length_Z);
-  void Set_TrackParas(int SegmentNum_tem, double KeepPercent_tem);
+  void Set_TrackParas(int SegmentNum_tem, double LowerKeepPercent_tem, double KeepPercent_tem);
   double Ana_Truncated_dEdX();
   double Ana_MostProb_dEdX();
   
