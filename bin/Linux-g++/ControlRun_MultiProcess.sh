@@ -4,9 +4,10 @@ MainPath=$(pwd)
 dire="./Run_"
 Exec_Name="exampleB2a"
 
-#Certain_Momentum=(1400 1500 1600 1700 1800 1900 2000 2100 2200 2300 2400 2500 2600 2700 2800 3200 3400 3600 3800 4000)
+ParticleName="pi-" # "pi-", "pi+", "e+", "e-", "proton", "2H", "3H", "3He", "4He"
+ParticleA=1
+ParticleZ=1
 Certain_Momentum=(30 40 50 100 125 150 175 200 225 250 275 300 325 350 375 400 425 450 475 500)
-#Certain_Momentum=(450 475)
 tmp_fifofile="/tmp/$$.fifo"
 #建立了一个管道文件，并赋予了ID为6
 mkfifo $tmp_fifofile
@@ -36,8 +37,16 @@ read -u6
   cd $MainPath/$dire$i/Config
   echo $PWD
 #  read -p "Press any key to continue.";
+  if [[ ${ParticleName} == "2H" || ${ParticleName} == "3H" || ${ParticleName} == "3He" || ${ParticleName} == "4He" ]]
+  then 
+    sed -i  's/^Particle\t.*/Particle heavyion/' Source.config
+  else
+    sed -i  's/^Particle\t.*/Particle '${ParticleName}'/' Source.config
+  fi
+  sed -i  's/^Particle_A.*/Particle_A '${ParticleA}'/' Source.config
+  sed -i  's/^Particle_Z.*/Particle_Z '${ParticleZ}'/' Source.config
   sed -i  's/^Certain_Momentum.*/Certain_Momentum '${Certain_Momentum[i-1]}'/' Source.config
-  sed -i  's/^Output_FileName.*/Output_FileName 'pi-_Momentum${Certain_Momentum[i-1]}MeV_0.5T_0.5mm_Z_12mm.root'/' Initial.config
+  sed -i  's/^Output_FileName.*/Output_FileName '${ParticleName}_Momentum${Certain_Momentum[i-1]}MeV_0.5T_0.5mm_Z_12mm.root'/' Initial.config
   
   cd $MainPath/$dire$i
   ./$Exec_Name
