@@ -31,7 +31,7 @@ void Get_Truncated_dEdX()
   
   string *ParticleMomentum = new string[MomentumNum];
   
-  double *Truncated_Value = new double[MomentumNum]
+  double *Truncated_Value = new double[MomentumNum];
   for (auto i = 0; i < MomentumNum; i++)
     Truncated_Value[i] = 0;
 
