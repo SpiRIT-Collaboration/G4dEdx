@@ -7,7 +7,7 @@ void Get_Truncated_dEdX()
   string ParticleName = "pi-"; //"pi-","pi+","proton","2H","3H","3He","4He"}
 
   double Z = 1;
-  if (ParticleName == "pi-")
+  if (ParticleName == "pi-" || ParticleName == "e-")
     Z = -1;
   else if (ParticleName == "3He" || ParticleName == "4He")
     Z = 2;
